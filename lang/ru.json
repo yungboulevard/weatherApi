@@ -1,0 +1,19 @@
+{
+    "Invalid login": "Логин или пароль неверны.",
+    "Phone is required": "Телефон обязателен к заполнению.",
+    "Phone must be string": "Телефон должен быть строкой.",
+    "Phone must be unique": "Номер телефона должен быть уникальным.",
+    "There is no user with given phone number": "Пользователь с этим номером телефона не найден.",
+    "Password is required": "Пароль обязателен к заполнению.",
+    "City is required": "Город обязателен к заполнению.",
+    "City must be string": "Город должен быть строкой.",
+    "City length must be shorter than or equal to 255 characters": "Город должен иметь длину не более 255 символов.",
+    "Language code must be string": "Язык должен быть строкой.",
+    "Language code length must be shorter than or equal to 6 characters": "Язык должен иметь длину не более 6 символов.",
+    "Weather forecats type is required": "Тип прогноза погоды обязателен к заполнению.",
+    "Weather forecats type must be string": "Тип прогноза погоды обязателен к заполнению.",
+    "Weather forecats type is invalid": "Указан неверный тип прогноза погоды.",
+    "Degree type is required": "Тип градусов обязателен к заполнению.",
+    "Degree type type must be string": "Тип градусов должен быть строкой.",
+    "Degree type type is invalid": "Указан неверный тип градусов."
+}

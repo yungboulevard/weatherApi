@@ -1,0 +1,353 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "My First API",
+        "version": "0.1"
+    },
+    "paths": {
+        "/api/sign-in": {
+            "post": {
+                "tags": [
+                    "Sign In"
+                ],
+                "summary": "Login user.",
+                "description": "Login user.",
+                "operationId": "loginUser",
+                "parameters": [
+                    {
+                        "name": "phone",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "password",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "properties": {
+                                                "access_token": {
+                                                    "type": "string",
+                                                    "example": "4|HgY4knp76ukDIfka2eFqt3zX1a0aa6W76YqSKwwk7b276e29"
+                                                },
+                                                "token_type": {
+                                                    "type": "string",
+                                                    "example": "Bearer"
+                                                },
+                                                "expires": {
+                                                    "type": "integer",
+                                                    "example": "3600"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Invalid query params."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/sign-up": {
+            "post": {
+                "tags": [
+                    "Sign Up"
+                ],
+                "summary": "Register user.",
+                "description": "Register user.",
+                "operationId": "registerUser",
+                "parameters": [
+                    {
+                        "name": "phone",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "description": "regex:/\\+7[0-9]{10}/m",
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "password",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success. This token must be use in header 'Authorization: Bearer $token'",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "properties": {
+                                                "access_token": {
+                                                    "type": "string",
+                                                    "example": "4|HgY4knp76ukDIfka2eFqt3zX1a0aa6W76YqSKwwk7b276e29"
+                                                },
+                                                "token_type": {
+                                                    "type": "string",
+                                                    "example": "Bearer"
+                                                },
+                                                "expires": {
+                                                    "type": "integer",
+                                                    "example": "3600"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Invalid phone/password supplied"
+                    }
+                }
+            }
+        },
+        "/api/user/get": {
+            "get": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Get a user with his request history. Requires Bearer token",
+                "description": "Get a user with his request history. Requires Bearer token",
+                "operationId": "get",
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 9
+                                                },
+                                                "name": {
+                                                    "type": "string",
+                                                    "example": null,
+                                                    "nullable": true
+                                                },
+                                                "phone": {
+                                                    "type": "string",
+                                                    "example": "+79999999999"
+                                                },
+                                                "created_at": {
+                                                    "type": "string",
+                                                    "format": "date-time",
+                                                    "example": "2024-11-01T14:51:37.000000Z"
+                                                },
+                                                "updated_at": {
+                                                    "type": "string",
+                                                    "format": "date-time",
+                                                    "example": "2024-11-01T14:51:37.000000Z"
+                                                },
+                                                "requests": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "integer",
+                                                                "example": 4
+                                                            },
+                                                            "user_id": {
+                                                                "type": "integer",
+                                                                "example": 9
+                                                            },
+                                                            "q": {
+                                                                "type": "string",
+                                                                "example": "москва"
+                                                            },
+                                                            "created_at": {
+                                                                "type": "string",
+                                                                "format": "date-time",
+                                                                "example": "2024-11-01T15:19:52.000000Z"
+                                                            },
+                                                            "updated_at": {
+                                                                "type": "string",
+                                                                "format": "date-time",
+                                                                "example": "2024-11-01T15:19:52.000000Z"
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    }
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/weather/get-weather": {
+            "get": {
+                "tags": [
+                    "Weather"
+                ],
+                "summary": "Get weather. Requires Bearer token",
+                "description": "Get weather. Requires Bearer token",
+                "operationId": "ed0285147a6791e0676ff7d61fa22151",
+                "parameters": [
+                    {
+                        "name": "q",
+                        "in": "query",
+                        "description": "Город",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "lang",
+                        "in": "query",
+                        "description": "Язык. Если не указывать, то по дефолту - en",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "ru"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "type",
+                        "in": "query",
+                        "description": "Тип погоды",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "current",
+                                "forecast"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "degree_type",
+                        "in": "query",
+                        "description": "Тип градусов",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "celsius",
+                                "fahrenheit"
+                            ]
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "properties": {
+                                                "city": {
+                                                    "type": "string",
+                                                    "example": "Stavropol"
+                                                },
+                                                "country": {
+                                                    "type": "string",
+                                                    "example": "Russia"
+                                                },
+                                                "temp": {
+                                                    "type": "number",
+                                                    "format": "float",
+                                                    "example": 12.3
+                                                },
+                                                "wind": {
+                                                    "type": "integer",
+                                                    "example": 32
+                                                },
+                                                "feelslike": {
+                                                    "type": "number",
+                                                    "format": "float",
+                                                    "example": 9.5
+                                                },
+                                                "forecast": {
+                                                    "description": "Прогноз погоды",
+                                                    "type": "object"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Sign In",
+            "description": "Sign In"
+        },
+        {
+            "name": "Sign Up",
+            "description": "Sign Up"
+        },
+        {
+            "name": "User",
+            "description": "User"
+        },
+        {
+            "name": "Weather",
+            "description": "Weather"
+        }
+    ]
+}

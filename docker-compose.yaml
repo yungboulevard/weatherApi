@@ -1,0 +1,77 @@
+version: '3'
+services:
+  php:
+    build:
+      context: ./.docker/php
+      dockerfile: Dockerfile
+    volumes:
+      - ./.docker/php/custom.ini:/usr/local/etc/php/conf.d/custom.ini
+      - .:/var/www/public:delegated
+    environment:
+      PHP_USER_ID: ${PHP_USER_ID}
+    depends_on:
+      - postgres
+    networks:
+      - web
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    command: sh -c "composer install && php-fpm"
+
+
+  nginx:
+    image: nginx:alpine
+    volumes:
+      - ./.docker/nginx:/etc/nginx/conf.d/
+      - .:/var/www/public:delegated
+    depends_on:
+      - php
+    ports:
+      - 80:80
+      - 443:443
+    networks:
+      - web
+
+  supervisor:
+    build:
+      context: ./.docker/supervisor
+      dockerfile: Dockerfile
+    depends_on:
+      - php
+      - postgres
+    volumes:
+      - .:/var/www/public:delegated
+    networks:
+      - web
+
+  postgres:
+    image: postgres
+    environment:
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      PGDATA: /docker/postgres/data/postgres
+    volumes:
+       - ./.docker/postgres:/data/postgres
+    ports:
+      - "5432:5432"
+    networks:
+      - web
+    restart: unless-stopped
+
+  redis:
+    image: redis
+    restart: unless-stopped
+    ports:
+      - '6379:6379'
+    command: redis-server --save 20 1 --loglevel warning --requirepass ${REDIS_KEY}
+    volumes:
+      - redis:/data
+    networks:
+      - web
+
+networks:
+  web:
+    external: true
+
+volumes:
+  redis:
+    driver: local
